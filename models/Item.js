@@ -10,7 +10,7 @@ const ItemSchema = new Schema({
         type: String,
         required: true
     },
-    category:{
+    category: {
         type: String,
         required: true
     },
@@ -25,4 +25,4 @@ const ItemSchema = new Schema({
 });
 
 
-module.exports = Item = mongoose.model('item',ItemSchema);
+module.exports = Item = mongoose.model('item', ItemSchema);
