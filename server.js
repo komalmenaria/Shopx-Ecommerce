@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 
 
 const authRoutes = require('./routes/auth');
+const itemRoutes = require('./routes/item');
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(express.json());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/api',authRoutes);
+app.use('/api',itemRoutes);
 
 // used in production to serve client files
 if (process.env.NODE_ENV === "production") {
