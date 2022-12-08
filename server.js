@@ -2,9 +2,17 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
+const bodyParser = require('body-parser')
+
+
+const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(express.json());
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use('/api',authRoutes);
 
 // used in production to serve client files
 if (process.env.NODE_ENV === "production") {
@@ -24,5 +32,5 @@ mongoose.connect(dbURI, {
     useUnifiedTopology: true,
   },
   console.log(dbURI))
-  .then(() => console.log('MongoDB connection established.'))
+  .then(() => console.log('MongoDB connection established.') ,app.listen(port, () => console.log(`Server running on http://localhost:${port}`)))
 .catch((error) => console.error("MongoDB connection failed:", error.message))
