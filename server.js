@@ -17,11 +17,12 @@ if (process.env.NODE_ENV === "production") {
 // connecting to mongoDB and then running server on port 4000
 const dbURI = config.get("dbURI");
 const port = process.env.PORT || 4000;
-mongoose
-  .connect(dbURI, {
+
+mongoose.set('strictQuery', true);
+mongoose.connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-  })
-  .then((result) => app.listen(port))
-  .catch((err) => console.log(err));
+  },
+  console.log(dbURI))
+  .then(() => console.log('MongoDB connection established.'))
+.catch((error) => console.error("MongoDB connection failed:", error.message))

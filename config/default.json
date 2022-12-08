@@ -1,5 +1,5 @@
 {
-    "dbURI": "YOUR DB URI",
-    "jwtsecret": "your jwt secret",
-    "StripeAPIKey": "YOUR STRIPE SECRET API KEY"
+    "dbURI": "mongodb+srv://komal:yikkr85E90TmeMbk@ecommerce.9bcjv0k.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    "jwtsecret": "komal",
+    "StripeAPIKey": "sk_test_51JMC7jSBd89uYzYXLxNLOWAnzA8Hzqt4iFp4NlgHnzxrTYjrGMuLH9ki6yfgcZVik5gDrdKInyI1Ot9BEqlNGzkx008yUL6bvz"
 }
