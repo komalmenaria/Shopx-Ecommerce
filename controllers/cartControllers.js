@@ -119,15 +119,13 @@ module.exports.delete_item = async (req,res) => {
         let cart = await Cart.findOne({userId});
         if(!cart)
         return res.status(500).send("Cart not found")
-        console.log(cart.items)
         let itemIndex = cart.items.findIndex(p => p.productId == productId);
-        // console.log(itemIndex)
         if(itemIndex > -1)
         {
             let productItem = cart.items[itemIndex];
-            console.log(productItem)
+            // console.log(productItem)
             cart.bill -= productItem.quantity*productItem.price;
-            console.log(cart.bill)
+       
             cart.items.splice(itemIndex,1);
         }
         else{
