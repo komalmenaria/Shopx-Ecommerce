@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
 const bodyParser = require('body-parser')
+const fileUpload = require("express-fileupload");
+
 
 
 const authRoutes = require('./routes/auth');
@@ -13,8 +15,10 @@ const orderRoutes = require('./routes/order');
 const app = express();
 app.use(express.json());
 
-// parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(fileUpload());
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use('/api',authRoutes);
 app.use('/api',itemRoutes);
 app.use('/api',cartRoutes);
