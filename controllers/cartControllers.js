@@ -1,5 +1,7 @@
 const Cart = require('../models/Cart');
 const Item = require('../models/Item');
+const {errorHandler} = require("../util")
+
 
 module.exports.get_cart_items =async (req,res)=>{
 const userId = req.params.id;
@@ -12,9 +14,10 @@ try{
     else{
         res.status(500).send('No Item in the cart')
     }
-}catch(err){
-    console.log(err)
-    res.status(500).send('Something went wrong')
+}catch (error) {
+    errorHandler(error)
+    console.log(error)
+     return res.status(500).json({msg:"Technical error occured"})
 }
 }
 
@@ -65,10 +68,11 @@ module.exports.add_cart_item = async (req,res) => {
             return res.status(201).send(newCart);
         }
     }
-    catch(err){
-        console.log(err);
-        res.status(500).send("Something went wrong");
-    }
+    catch (error) {
+    errorHandler(error)
+    console.log(error)
+     return res.status(500).json({msg:"Technical error occured"})
+}
 
 }
 
@@ -104,10 +108,11 @@ module.exports.update_cart_item = async (req,res) =>{
             return res.status(201).send(cart);
         }
     }
-    catch(err){
-        // just printing the error wont help us find where is the error. Add some understandable string to it.
-        console.log('Error in update cart', err);
-        res.status(500).send("Something went wrong");
+  
+    catch (error) {
+        errorHandler(error)
+        console.log('Error in update cart', err)
+         return res.status(500).json({msg:"Technical error occured"})
     }
 }
 
@@ -134,8 +139,9 @@ module.exports.delete_item = async (req,res) => {
         cart = await cart.save();
         return res.status(201).send(cart);
     }
-    catch (err) {
-        console.log(err);
-        res.status(500).send("Something went wrong");
+    catch (error) {
+        errorHandler(error)
+        console.log(error)
+         return res.status(500).json({msg:"Technical error occured"})
     }
 }

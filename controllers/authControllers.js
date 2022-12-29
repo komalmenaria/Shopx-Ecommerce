@@ -2,6 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcrypt");
+const {errorHandler} = require("../util")
 const { generateHash, generateToken, compareHash } = require("../util")
 module.exports.signup = async (req, res) => {
     try {
@@ -25,11 +26,13 @@ module.exports.signup = async (req, res) => {
                 id: newUser._id,
                 name: newUser.name,
                 email: newUser.email,
+                role:1
             }
         })
     } catch (error) {
+        errorHandler(error)
         console.log(error)
-        res.status(500).send(error.message)
+         return res.status(500).json({msg:"Technical error occured"})
     }
 
 };
@@ -60,10 +63,10 @@ module.exports.login = async (req, res) => {
             }
         })
     } catch (error) {
+        errorHandler(error)
         console.log(error)
-        res.status(500).send(error.message)
+         return res.status(500).json({msg:"Technical error occured"})
     }
-
 
 }
 

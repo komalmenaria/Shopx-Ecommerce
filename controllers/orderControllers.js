@@ -45,9 +45,9 @@ module.exports.checkout = async (req, res) => {
         else {
             res.status(500).send("You do not have item in the cart");
         }
-    } catch (err) {
-        console.log(err);
-        return res.status(500).send("Something went wrong")
-
+    } catch (error) {
+        errorHandler(error)
+        console.log(error)
+         return res.status(500).json({msg:"Technical error occured"})
     }
 }

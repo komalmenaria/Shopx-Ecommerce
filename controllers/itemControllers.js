@@ -10,8 +10,9 @@ module.exports.get_single_item = async (req,res) =>{
             res.json(item);
         });
     } catch (error) {
+        ererrorHandler(error)
         console.log(error)
-         res.status(500).json({msg:"Something went wrong"})
+        return res.status(500).json({msg:"Technical error occured"})
     }
 }
 
@@ -31,8 +32,9 @@ try{
     }) 
 }
 catch (error) {
+    errorHandler(error)
     console.log(error)
-     res.status(500).json({msg:"Something went wrong"})
+    return res.status(500).json({msg:"Technical error occured"})
 }
     
     
@@ -55,9 +57,9 @@ module.exports.post_item = async (req,res)=>{
     res.json(newItem)
     // newItem.save().then(item => res.json(item));
     } catch (error) {
-
+        errorHandler(error)
         console.log(error)
-         res.status(500).json({msg:"Something went wrong"})
+         return res.status(500).json({msg:"Technical error occured"})
     }
     
 }
@@ -92,15 +94,20 @@ module.exports.update_item = async (req,res) => {
           });
     }
     catch (error){
-    errorHandler(error)
-        console.error(error);
-        return res.status(500).send({msg:"Technical Error"})
+        errorHandler(error)
+        console.log(error)
+         return res.status(500).json({msg:"Technical error occured"})
       }
     
 }
 
 module.exports.delete_item = (req,res) => {
-    Item.findByIdAndDelete({_id: req.params.id}).then(function(item){
-        res.json({success: true});
-    });
+    try{
+
+    }
+    catch (error){
+        errorHandler(error)
+        console.log(error)
+         return res.status(500).json({msg:"Technical error occured"})
+    }
 }
