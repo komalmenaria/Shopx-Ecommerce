@@ -1,0 +1,13 @@
+.button-blue{
+    background-color: #03B4EE;
+    color: #fff;
+    font-weight: 700;
+}
+.jumbotron{
+    border-radius: 0px !important;
+background-color: black !important;
+}
+
+.text-white{
+    color: #fff;
+}

@@ -13,7 +13,7 @@ module.exports.signup = async (req, res) => {
 
         let user = await User.findOne({ email })
         if (user) return res.status(400).json({ msg: "User already exists" });
-        const newUser = new User({ name, email, password });
+        const newUser = new User({ name, email, password , role:1});
         let hashPassword = await generateHash(password)
         newUser.password = hashPassword;
         await newUser.save()
@@ -56,6 +56,7 @@ module.exports.login = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                role:user.role || 1
             }
         })
     } catch (error) {

@@ -3,14 +3,14 @@ const Item = require('../models/Item');
 
 module.exports.get_cart_items =async (req,res)=>{
 const userId = req.params.id;
-console.log(userId)
+// console.log(userId)
 try{
     let cart = await Cart.findOne({userId});
     if(cart && cart.items.length>0){
         res.send(cart);
     }
     else{
-        res.send(null)
+        res.status(500).send('No Item in the cart')
     }
 }catch(err){
     console.log(err)

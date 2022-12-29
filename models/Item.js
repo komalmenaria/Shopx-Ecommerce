@@ -20,7 +20,7 @@ const ItemSchema = new Schema({
     },
     imageKey: {
         type: String,
-        // required: true
+        required: true
     },
     date_added: {
         type: Date,

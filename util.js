@@ -1,6 +1,16 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcrypt");
+var Bugsnag = require('@bugsnag/js')
+var BugsnagPluginExpress = require('@bugsnag/plugin-express')
+
+Bugsnag.start({
+  apiKey: 'eb94178780dd0d29e164552326bff5fd',
+  plugins: [BugsnagPluginExpress]
+})
+module.exports.errorHandler = (e)=>{
+    Bugsnag.notify(e)
+}
 
 module.exports.generateHash = (password) =>{
 

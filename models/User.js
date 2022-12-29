@@ -21,6 +21,10 @@ const UserSchema = new Schema({
         require:[true,'Enter a password'],
         minlength:[6,'Minimum length of password need to be 6']
     },
+    role:{
+        type:Number,
+        require:[true,'Enter a Role']
+    },
     register_date: {
         type: Date,
         default: Date.now
