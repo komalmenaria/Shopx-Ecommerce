@@ -5,10 +5,20 @@ import Home from './Home';
 import About from './About';
 import Navbar from './Navbar';
 import Product from "./Product"
-import Cart from "./Cart"
+import Cart from "./Cart/Cart"
 import AdminProduct from "./Product/DetailProduct"
 import Login from "./auth/Login"
-import Register from "./auth/Register"
+import Register from "./auth/Register";
+import Bugsnag from '@bugsnag/js'
+import BugsnagPluginReact from '@bugsnag/plugin-react'
+
+Bugsnag.start({
+  apiKey: 'c65be705ee4923b7263c07c82e551d19',
+  plugins: [new BugsnagPluginReact()]
+})
+
+// const ErrorBoundary = Bugsnag.getPlugin('react')
+//   .createErrorBoundary(React)
 
 
 function Main() {

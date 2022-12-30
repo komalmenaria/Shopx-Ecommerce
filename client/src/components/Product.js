@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router';
+
 
 function Product() {
-  const Navigation = useNavigate();
-  const [data, setData] = useState([])
 
+  const [data, setData] = useState([])
 
   async function fetchData() {
     let result = await fetch("http://localhost:4000/api/items");
@@ -14,16 +13,31 @@ function Product() {
     // console.log(data)
 
   }
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      Navigation("/login")
-    } else {
-      fetchData();
+  
+  async function addItemInCart(item){  
+  let newUser = await  JSON.parse(localStorage.getItem("user-info"))
+let productData =  {productId:item._id,quantity:1}
+productData = JSON.stringify(productData) 
+console.log(productData)
+
+    try{
+    await fetch(`http://localhost:4000/api/addcartitem/${newUser.id}` ,{
+     method: 'POST',
+    body: productData,
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
     }
-    //  console.log(data)
+  })
+      }
+      catch(error){
+        console.log(error)
+      }
+  }
 
 
+  useEffect(() => {
+      fetchData();
   }, []);
   return (
     <>
@@ -38,14 +52,13 @@ function Product() {
                   <h5 className="card-title">{item.title}</h5>
                   <p className="card-text">{item.description}</p>
                   <p className='card-text '>Price {item.price} </p>
-
                   <div className="card-body d-flex justify-content-center">
                     <button className="btn btn-primary mx-1">Buy Now</button>
-                    <button className="btn btn-primary mx-1">Add to Cart</button>
+                    <button className="btn btn-primary mx-1" onClick={()=>addItemInCart(item)}>Add to Cart</button>
                   </div>
                 </div>
               </div>))
-            : "not found"}
+            : <p className="text-center"> No data Found </p> }
         </div>
       </div>
     </>

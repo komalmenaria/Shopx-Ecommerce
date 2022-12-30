@@ -19,6 +19,7 @@ async function addProduct(event){
   formData.append("category",category);
   formData.append("imageKey",imageKey);
 
+try{
 
  
       await fetch("http://localhost:4000/api/addItem" , {
@@ -32,7 +33,10 @@ async function addProduct(event){
           alert(result.msg)
          
         }
-}).catch(error => console.log('error', error));
+})
+}
+catch(error ){
+  console.log('error', error)} 
 }
 
   return (
