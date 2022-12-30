@@ -13,6 +13,9 @@ const CartSchema = new Schema({
         imageKey:  {
             type: String,
             required: true},
+        description:  {
+             type: String,
+            required: true},
         quantity: {
             type: Number,
             required: true,
@@ -26,6 +29,7 @@ const CartSchema = new Schema({
         required: true,
         default: 0
     }
+    //desc kidhsr hain ?
 });
 
 module.exports = Cart = mongoose.model('cart', CartSchema);

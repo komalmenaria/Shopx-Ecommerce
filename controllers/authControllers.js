@@ -1,7 +1,7 @@
 const User = require("../models/User");
-const jwt = require("jsonwebtoken");
-const config = require("config");
-const bcrypt = require("bcrypt");
+// const jwt = require("jsonwebtoken");
+// const config = require("config");
+// const bcrypt = require("bcrypt");
 const {errorHandler} = require("../util")
 const { generateHash, generateToken, compareHash } = require("../util")
 module.exports.signup = async (req, res) => {
