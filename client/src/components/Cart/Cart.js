@@ -35,6 +35,7 @@ function Cart() {
   const updateCartItem = async (value,item) =>{
 console.log(item)
     let myItem =  { productId: item.productId, quantity: value }
+
     console.log(myItem)
         try {
        let  result = await fetch(`http://localhost:4000/api/updatecartitem/${responseData.userId}`, {

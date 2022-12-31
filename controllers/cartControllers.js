@@ -97,12 +97,17 @@ module.exports.update_cart_item = async (req,res) =>{
     try{
         let cart = await Cart.findOne({userId});
         let item = await Item.findOne({_id:productId});
-
-        if(!item)
-        return res.status(404).send("Item not found!");
-
         if(!cart)
+       {
         return res.status(400).send("Cart not found");
+       }
+
+       else if(!item)
+       {
+        return res.status(404).send("Item not found!");
+       }
+
+        
         else{
             // if cart exists for the user
             let itemIndex = cart.items.findIndex(p => p.productId ==  productId);
