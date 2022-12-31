@@ -41,6 +41,7 @@ console.log(item)
        let  result = await fetch(`http://localhost:4000/api/updatecartitem/${responseData.userId}`, {
             method: 'PUT',
             body: JSON.stringify(myItem)
+          
           });
     console.log(result)
           getCartDetails()
