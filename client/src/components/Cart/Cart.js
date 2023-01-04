@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function Cart() {
   const [data, setData] = useState([])
   const [responseData, setResponseData] = useState("")
   const [itemQuantity, setItemQuantity] = useState("")
   let newUser = JSON.parse(localStorage.getItem("user-info"))
-
+const token = localStorage.getItem("token");
   async function getCartDetails() {
     try {
-      let result = await fetch(`http://localhost:4000/api/getcartitem/${newUser.id}`)
+      let result = await fetch(`http://localhost:4000/api/getcartitem/${newUser.id}`,{
+        method: 'GET',
+        headers: {
+          "x-auth-token": token
+        }
+      })
       result = await result.json();
       setData(result.items)
       setResponseData(result)
@@ -22,7 +28,10 @@ function Cart() {
   async function deleteItemInCart(item) {
     try {
       await fetch(`http://localhost:4000/api/deletecartitem/${responseData.userId}/${item.productId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            "x-auth-token": token
+          }
       });
 
       getCartDetails()
@@ -34,20 +43,21 @@ function Cart() {
 
   const updateCartItem = async (value,item) =>{
 console.log(item)
-    let myItem =  { productId: item.productId, quantity: value }
-
-    console.log(myItem)
         try {
-       let  result = await fetch(`http://localhost:4000/api/updatecartitem/${responseData.userId}`, {
-            method: 'PUT',
-            body: JSON.stringify(myItem)
-          
-          });
+         
+       let  result = await axios.put(`http://localhost:4000/api/updatecartitem/${responseData.userId}` ,
+       { productId: item.productId, quantity: value },
+       {
+        headers: {
+          "x-auth-token":  token //the token is a variable which holds the token
+        }
+       }
+        )
     console.log(result)
           getCartDetails()
         }
         catch (error) {
-          console.log(error)
+          console.log(error.message)
         }
   }
   

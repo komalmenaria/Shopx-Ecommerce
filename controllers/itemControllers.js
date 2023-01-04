@@ -103,7 +103,9 @@ module.exports.update_item = async (req,res) => {
 
 module.exports.delete_item = (req,res) => {
     try{
-
+        Item.findByIdAndDelete({_id: req.params.id}).then(function(item){
+            res.json({success: true});
+        });
     }
     catch (error){
         errorHandler(error)

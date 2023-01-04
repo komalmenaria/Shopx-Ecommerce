@@ -19,16 +19,13 @@ try{
          finalResponse.push(element) 
         }
       cart.items = finalResponse
-        //  res.json(finalResponse)
         res.send(cart);
     }
-    else{
-        res.status(500).send('No Item in the cart')
-    }
-}catch (error) {
+}
+catch (error) {
     errorHandler(error)
     console.log(error)
-     return res.status(500).json({msg:"Technical error occured"})
+    return res.status(500).json({msg:"Technical error occured"})
 }
 }
 
@@ -93,7 +90,7 @@ module.exports.add_cart_item = async (req,res) => {
 module.exports.update_cart_item = async (req,res) =>{
     const userId = req.params.id;
     const { productId , quantity} = req.body;
-
+console.log("productId" , productId, "quantity" , quantity )
     try{
         let cart = await Cart.findOne({userId});
         let item = await Item.findOne({_id:productId});
@@ -104,7 +101,7 @@ module.exports.update_cart_item = async (req,res) =>{
 
        else if(!item)
        {
-        return res.status(404).send("Item not found!");
+        return res.status(400).send("Item not found!");
        }
 
         

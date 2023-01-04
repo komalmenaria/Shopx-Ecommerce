@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 function Register() {
 
@@ -19,34 +20,28 @@ function Register() {
        
         let item = { name, email, password }
         console.log(item)
-
-
-
-        await fetch("http://localhost:4000/api/register", {
-            method: 'POST',
-            body: JSON.stringify(item),
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        }).then(async (result) => {
-            if (result.status == 200) {
-                result = await result.json()
-                localStorage.setItem("token", result.token)
-                localStorage.setItem("user-info", JSON.stringify(result.user))
-                Navigation("/about")
-                console.log(result)
-            }else{
-                result = await result.json()
-                alert(result.msg)
-            }
-
-        })
-            .catch(error => console.log('error', error));
-
-
-
+try {
+    let result = await fetch("http://localhost:4000/api/register", {
+        method: 'POST',
+        body: JSON.stringify(item),
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    })
+    if (result.status == 200) {
+        result = await result.json()
+        localStorage.setItem("token", result.token)
+        localStorage.setItem("user-info", JSON.stringify(result.user))
+        Navigation("/about")
+        console.log(result)
+    }else{
+        result = await result.json()
+        alert(result.msg)
     }
+} catch (error) {
+    console.log('error', error)
+}   }
 
     return (
         <>
@@ -66,8 +61,8 @@ function Register() {
                     <label htmlFor="password">Password</label>
                     <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control" id="password" autoComplete='false' required />
                 </div>
-                <button onClick={register} className="btn btn-primary">Register</button>
-
+                <button onClick={register} className="btn btn-primary">Submit </button>
+<Link to="/login"> Already have an account ?</Link>
             </div>
 
         </>

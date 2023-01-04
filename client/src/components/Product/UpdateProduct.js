@@ -10,10 +10,15 @@ const [price, setPrice] = useState("");
 const [description, setDescription] = useState("");
 const [category, setCategory] = useState("");
 const [imageKey, setImageKey] = useState("");
-
+const token = localStorage.getItem("token");
 
 async function getProductDetails(productId){
-  let result = await fetch(`http://localhost:4000/api/getItem/${productId}`);
+  try {
+    let result = await fetch(`http://localhost:4000/api/getItem/${productId}`,{
+    headers: {
+      "x-auth-token": token
+    }
+  });
   result = await result.json();
   console.log(result)
   setTitle(result.title)
@@ -21,6 +26,9 @@ async function getProductDetails(productId){
   setDescription(result.description)
   setCategory(result.category)
   setImageKey(result.imageKey)
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 
@@ -40,20 +48,27 @@ formData.append("category",category);
 formData.append("imageKey",imageKey);
 
 console.log(formData)
-await fetch(`http://localhost:4000/api/updateItem/${id}` , {
+try {
+ let result = await fetch(`http://localhost:4000/api/updateItem/${id}` , {
       method: 'PUT',
-      body: formData }).then(async (result) => {
-        if (result.status == 200) {
-            result = await result.json();
-            document.getElementById('close-modal-2').click();
-            setIsUpdated(true)
+      headers: {
+        "x-auth-token": token
+      },
+      body: formData });
 
-        }else{
-          result = await result.json()
-          alert(result.msg)
-         
-        }
-}).catch(error => console.log('error', error));
+      if (result.status == 200) {
+        result = await result.json();
+        document.getElementById('close-modal-2').click();
+        setIsUpdated(true)
+
+    }else{
+      result = await result.json()
+      alert(result.msg)
+     
+    }
+} catch (error) {
+  console.log('error', error)
+}
 }
 
 useEffect(()=>{

@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 
 function Product() {
 
   const [data, setData] = useState([])
-
+  const token = localStorage.getItem("token")
+const navigate = useNavigate()
   async function fetchData() {
-    let result = await fetch("http://localhost:4000/api/items");
+    try {
+      let result = await fetch("http://localhost:4000/api/items");
     result = await result.json();
     // console.log(result)
     setData(result)
     // console.log(data)
+    } catch (error) {
+      console.log(error)
+    }
 
   }
   
   async function addItemInCart(item){  
   let newUser = await  JSON.parse(localStorage.getItem("user-info"))
+  if(!newUser){
+    navigate("/login")
+  }
 let productData =  {productId:item._id,quantity:1}
 productData = JSON.stringify(productData) 
 console.log(productData)
+
 
     try{
     await fetch(`http://localhost:4000/api/addcartitem/${newUser.id}` ,{
@@ -26,7 +36,8 @@ console.log(productData)
     body: productData,
     headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Accept": "application/json",
+        "x-auth-token": token
     }
   })
       }

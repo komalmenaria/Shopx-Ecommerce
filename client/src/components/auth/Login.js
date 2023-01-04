@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 function Login() {
     const Navigation = useNavigate()
@@ -16,14 +17,16 @@ function Login() {
     async function login() {
         let item = { email, password }
         console.log(item)
-        await fetch("http://localhost:4000/api/login", {
-            method: 'POST',
-            body: JSON.stringify(item),
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        }).then(async (result) => {
+        try {
+            let result = await fetch("http://localhost:4000/api/login", {
+                method: 'POST',
+                body: JSON.stringify(item),
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                }
+            });
+
             if (result.status == 200) {
                 result = await result.json()
                 localStorage.setItem("token", result.token)
@@ -34,9 +37,9 @@ function Login() {
                 result = await result.json()
                 alert(result.msg)
             }
-
-        })
-            .catch(error => console.log('error', error));
+        } catch (error) {
+            console.log('error', error)
+        }
     }
     return (
         <>
@@ -51,6 +54,7 @@ function Login() {
                     <input type="password" onChange={(e) => setPassword(e.target.value)} className="form-control" id="password" />
                 </div>
                 <button type="submit" onClick={login} className="btn btn-primary">Login</button>
+                <Link to="/register"> Not have account ?</Link>
 
             </div>
         </>

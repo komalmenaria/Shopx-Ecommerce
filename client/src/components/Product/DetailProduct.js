@@ -9,35 +9,44 @@ function DetailProduct() {
   const [data, setData] = useState([])
 const [productId , setProductId] =useState(null)
 const [isUpdated , setIsUpdated] =useState(false)
+const token = localStorage.getItem("token");
 
   async function fetchData() {
-    let result = await fetch("http://localhost:4000/api/items");
+    try {
+      let result = await fetch("http://localhost:4000/api/items",{
+      headers: {
+        "x-auth-token": token
+      }
+    });
     result = await result.json();
     setData(result)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async function deleteProduct(id){
-await fetch(`http://localhost:4000/api/items/${id}` ,{
-    method:"DELETE"
-}).then(result => {
+    console.log(id)
+    try {
+    let result =  await fetch(`http://localhost:4000/api/deleteitem/${id}` ,{
+    method:"DELETE",
+    headers: {
+      "x-auth-token": token
+    }})
     console.log(result.json())
     fetchData()
-}
-)
-.catch(error => console.log('error', error));
-  }
+    } catch (error) {
+      console.log('error', error);
+    }}
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+
     if (!token) {
       Navigation("/login")
     } else {
       fetchData();
       setIsUpdated(false)
     }
-    //  console.log(data)
-
-
   }, [isUpdated]);
 
 

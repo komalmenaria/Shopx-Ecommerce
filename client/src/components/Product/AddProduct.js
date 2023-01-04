@@ -6,7 +6,7 @@ function AddProduct() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [imageKey, setImageKey] = useState("");
-   
+  const token = localStorage.getItem("token");
 
 async function addProduct(event){
   event.preventDefault();
@@ -23,7 +23,10 @@ try{
 
  
       await fetch("http://localhost:4000/api/addItem" , {
-      method: 'POST',
+      method: 'POST',headers: {
+        "x-auth-token": token
+      },
+      
       body: formData }).then(async (result) => {
         if (result.status == 200) {
             result = await result.json();
