@@ -9,6 +9,8 @@ import Cart from "./Cart/Cart"
 import AdminProduct from "./Product/DetailProduct"
 import Login from "./auth/Login"
 import Register from "./auth/Register";
+import ErrorView from './ErrorView';
+import ErrorBoundary from './ErrorBoundry';
 import Bugsnag from '@bugsnag/js'
 import BugsnagPluginReact from '@bugsnag/plugin-react'
 
@@ -35,6 +37,7 @@ function Main() {
                     <Route exact path="/adminproduct" element={<AdminProduct />} />
                     <Route exact path="/login" element={<Login />} />
                     <Route exact path="/register" element={<Register />} />
+                    <Route  path="*" element={<ErrorView />} />
                 </Routes>
             </Router>
         </div>

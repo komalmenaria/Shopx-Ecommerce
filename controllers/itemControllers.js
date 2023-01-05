@@ -10,7 +10,7 @@ module.exports.get_single_item = async (req,res) =>{
             res.json(item);
         });
     } catch (error) {
-        ererrorHandler(error)
+        errorHandler(error)
         console.log(error)
         return res.status(500).json({msg:"Technical error occured"})
     }

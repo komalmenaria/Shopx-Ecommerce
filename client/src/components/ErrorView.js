@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Bugsnag from '@bugsnag/js'
 import BugsnagPluginReact from '@bugsnag/plugin-react'
 
@@ -13,10 +14,11 @@ const ErrorBoundary = Bugsnag.getPlugin('react')
 function ErrorView() {
   return (
     <>
-    <div>
-    <p>Inform users of an error in the component tree.</p>
-  </div>
-  {/* <ErrorBoundary>
+      <div className='container my-3 d-flex flex-column justify-content-center'>
+      <h1>404 Page Not Found</h1>
+        <Link to="/">back to Home Page</Link>
+      </div>
+      {/* <ErrorBoundary>
     <YourApp />
   </ErrorBoundary> */}
     </>
