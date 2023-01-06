@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { useAlert } from "react-alert";
+import Spinner from '../Spinner';
 
 function Register() {
-
+const [loading, setLoading] = useState(false);
+const alert = useAlert();
     const Navigation = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -30,6 +33,7 @@ try {
         }
     })
     if (result.status == 200) {
+        alert.success(`${name} you are registered successfully`)
         result = await result.json()
         localStorage.setItem("token", result.token)
         localStorage.setItem("user-info", JSON.stringify(result.user))
@@ -37,10 +41,11 @@ try {
         console.log(result)
     }else{
         result = await result.json()
-        alert(result.msg)
+        alert.error(result.msg)
     }
 } catch (error) {
     console.log('error', error)
+    alert.error(error)
 }   }
 
     return (

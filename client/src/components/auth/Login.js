@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { useAlert } from "react-alert";
 
 function Login() {
+    const alert = useAlert();
     const Navigation = useNavigate()
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -28,6 +30,7 @@ function Login() {
             });
 
             if (result.status == 200) {
+                alert.success("Login Successfully")
                 result = await result.json()
                 localStorage.setItem("token", result.token)
                 localStorage.setItem("user-info", JSON.stringify(result.user))
@@ -35,10 +38,12 @@ function Login() {
                 console.log(result)
             }else{
                 result = await result.json()
-                alert(result.msg)
+                alert.error(result.msg)
             }
         } catch (error) {
             console.log('error', error)
+            alert.error(error)
+
         }
     }
     return (

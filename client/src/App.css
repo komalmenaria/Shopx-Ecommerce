@@ -30,3 +30,8 @@ background-color: black !important;
     font-weight: 500;
     margin: 0px !important;
 }
+.cart-count{
+    position: relative !important;
+    top: -12px;
+    right: 16px;
+}

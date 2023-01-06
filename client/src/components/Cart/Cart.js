@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+// import Spinner from '../Spinner';
+import { useAlert } from 'react-alert';
 
 function Cart() {
+  const alert = useAlert();
+  // const [loading, setloading] = useState(false)
   const [data, setData] = useState([])
   const [responseData, setResponseData] = useState("")
   const [itemQuantity, setItemQuantity] = useState("")
@@ -13,15 +17,16 @@ const token = localStorage.getItem("token");
         method: 'GET',
         headers: {
           "x-auth-token": token
-        }
-      })
+        }})
       result = await result.json();
       setData(result.items)
       setResponseData(result)
-      // console.log(result)
-    }
+      if(!result){
+        alert.error(result.msg)
+      }    }
     catch (error) {
       console.log(error)
+      alert.error(error)
     }
   }
 
@@ -33,11 +38,12 @@ const token = localStorage.getItem("token");
             "x-auth-token": token
           }
       });
-
-      getCartDetails()
+      alert.success("Item deleted Successfully")
+      getCartDetails()  
     }
     catch (error) {
       console.log(error)
+      alert.error(error)
     }
   }
 
@@ -123,7 +129,7 @@ console.log(item)
             </> : ""
           }
         </div>
-      </div>
+      </div> 
     </>
   )
 }

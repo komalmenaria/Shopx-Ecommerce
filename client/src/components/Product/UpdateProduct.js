@@ -1,9 +1,14 @@
 import React,{useState,useEffect} from 'react';
+import { useAlert } from "react-alert";
+import Spinner from '../Spinner';
 
 
 
 function UpdateProduct({id,setIsUpdated}) {
+  const [loading, setLoading] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
 
+  const alert = useAlert();
 
 const [title, setTitle] = useState("");
 const [price, setPrice] = useState("");
@@ -14,6 +19,7 @@ const token = localStorage.getItem("token");
 
 async function getProductDetails(productId){
   try {
+    setLoading(true)
     let result = await fetch(`http://localhost:4000/api/getItem/${productId}`,{
     headers: {
       "x-auth-token": token
@@ -26,8 +32,11 @@ async function getProductDetails(productId){
   setDescription(result.description)
   setCategory(result.category)
   setImageKey(result.imageKey)
+  setLoading(false)
+
   } catch (error) {
     console.log(error)
+    alert.error(error)
   }
 }
 
@@ -49,6 +58,7 @@ formData.append("imageKey",imageKey);
 
 console.log(formData)
 try {
+  setBtnLoading(true)
  let result = await fetch(`http://localhost:4000/api/updateItem/${id}` , {
       method: 'PUT',
       headers: {
@@ -57,17 +67,20 @@ try {
       body: formData });
 
       if (result.status == 200) {
+        setBtnLoading(false);
+        alert.success("Product updated successfully")
         result = await result.json();
         document.getElementById('close-modal-2').click();
         setIsUpdated(true)
 
     }else{
       result = await result.json()
-      alert(result.msg)
+      alert.error(result.msg)
      
     }
 } catch (error) {
   console.log('error', error)
+  alert.error(error)
 }
 
 }
@@ -94,7 +107,7 @@ if(id){
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div className="modal-body">
+          {loading ? <Spinner /> :   <div className="modal-body">
           <div className="form-group">
         <label htmlFor="title">Product Name</label>
         <input type="text" className="form-control" onChange={(e) =>{setTitle(e.target.value)}} value={title} id="title" />
@@ -117,10 +130,10 @@ if(id){
         <img src={imageKey} alt={title} style={{width:"100px"}} className="mt-3" />
       </div>
     
-          </div>
+          </div> }
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" id="close-modal-2" data-dismiss="modal">Close</button>
-            <button type="button" onClick={updateProduct} className="btn btn-primary">Save changes</button>
+          {btnloading ? < Spinner /> :   <button type="button" onClick={updateProduct} className="btn btn-primary">Save changes</button> }
           </div>
         </div>
       </div>

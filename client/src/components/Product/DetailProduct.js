@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 import UpdateProduct from "./UpdateProduct";
-
 import AddProduct from "./AddProduct";
+import Spinner from '../Spinner';
+import { useAlert } from 'react-alert';
+
 
 function DetailProduct() {
+  const alert = useAlert();
+  const [loading, setloading] = useState(false)
   const Navigation = useNavigate();
   const [data, setData] = useState([])
 const [productId , setProductId] =useState(null)
@@ -13,6 +17,7 @@ const token = localStorage.getItem("token");
 
   async function fetchData() {
     try {
+      setloading(true)
       let result = await fetch("http://localhost:4000/api/items",{
       headers: {
         "x-auth-token": token
@@ -20,8 +25,10 @@ const token = localStorage.getItem("token");
     });
     result = await result.json();
     setData(result)
+    setloading(false)
     } catch (error) {
       console.log(error)
+      alert.error(error)
     }
   }
 
@@ -33,10 +40,17 @@ const token = localStorage.getItem("token");
     headers: {
       "x-auth-token": token
     }})
+
+    if(!result){
+      alert.error(result.msg)
+    }
+    alert.success("Product deleted successfully")
     console.log(result.json())
+    
     fetchData()
     } catch (error) {
       console.log('error', error);
+      alert.error(error)
     }}
 
   useEffect(() => {
@@ -59,7 +73,7 @@ const token = localStorage.getItem("token");
 < UpdateProduct id={productId} setIsUpdated={setIsUpdated} />
 
 </div>
-        <table className="table">
+     {loading ? <Spinner /> :    <table className="table">
   <thead>
     <tr>
       <th scope="col">Id</th>
@@ -95,7 +109,7 @@ const token = localStorage.getItem("token");
     }
   
   </tbody>
-</table>
+</table> }
     </div>
     </>
   )

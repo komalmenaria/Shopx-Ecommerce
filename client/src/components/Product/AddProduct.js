@@ -1,12 +1,16 @@
 import React,{useState} from 'react';
+import Spinner from '../Spinner';
+import { useAlert } from 'react-alert';
 
 function AddProduct() {
+  const alert = useAlert();
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [imageKey, setImageKey] = useState("");
   const token = localStorage.getItem("token");
+  const [loading, setloading] = useState(false)
 
 async function addProduct(event){
   event.preventDefault();
@@ -20,8 +24,8 @@ async function addProduct(event){
   formData.append("imageKey",imageKey);
 
 try{
-
  
+      setloading(true)
       await fetch("http://localhost:4000/api/addItem" , {
       method: 'POST',headers: {
         "x-auth-token": token
@@ -29,17 +33,22 @@ try{
       
       body: formData }).then(async (result) => {
         if (result.status == 200) {
+          setloading(false)
+          alert.success("Product added successfully")
             result = await result.json();
             document.getElementById('close-modal').click();
         }else{
           result = await result.json()
-          alert(result.msg)
+          alert.error(result.msg)
          
         }
 })
 }
 catch(error ){
-  console.log('error', error)} 
+  console.log('error', error)
+alert.error(error)
+} 
+
 }
 
   return (
@@ -84,7 +93,7 @@ catch(error ){
       </div>
       <div className="modal-footer">
         <button type="button" className="btn btn-secondary" id="close-modal" data-dismiss="modal">Close</button>
-        <button type="button" onClick={addProduct} className="btn btn-primary">Save changes</button>
+      {loading ? <Spinner /> :   <button type="button" onClick={addProduct} className="btn btn-primary">Save changes</button> }
       </div>
     </div>
   </div>
